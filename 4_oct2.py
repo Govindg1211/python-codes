@@ -1,37 +1,29 @@
-# write a function that takes one input parameter (0) and evaluates an expression a=n*10 for all values between 0 to n
-
 import time
-ns = [1234243,12342345,46785687,3456567]
-#n = 10000000
+
+# List of sample n values for testing
+ns = [1234243, 12342345, 46785687, 3456567]
 
 def testfn(n):
-    for i in range (0,n):
-        a = i*10
-# estimate execution time of this function for n
+    """Function to evaluate an expression for all values between 0 and n."""
+    for i in range(0, n):
+        a = i * 10  # Example calculation (you can modify this as needed)
 
-def wrapper(func, *args, **kwargs):
-    def wrapped( *args, **kwargs):
+def wrapper(func):
+    """Decorator to measure the execution time of a function."""
+    def wrapped(*args, **kwargs):  # Accepting *args and **kwargs
+        start_time = time.time()  # Start time measurement
+        func(*args, **kwargs)      # Call the original function with args and kwargs
+        end_time = time.time()     # End time measurement
         
-        startTime = time.time()
-        func(*args, **kwargs)
-
-        endTime = time.time()
-        print(f"for n = {n} execution time is {endTime-startTime} seconds")
-    wrapped (*args, **kwargs)
+        print(f"For n = {args[0]}, execution time is {end_time - start_time:.6f} seconds")
+    
     return wrapped
 
-@wrapped  #decorater
-def testfn(n):
-    for i in range(0,n):
-        a = i*10
+# Apply the wrapper decorator to the testfn function
+@wrapper
+def wrapped_testfn(n):
+    testfn(n)
 
-def random(n):
-    n**n
-random(n)
-
-n = 100000
-
-wrapped_fn = wrapper(testfn, n)
-wrapped_fn(n)
-
-#useful while using fastapi for webserver scraping
+# Example usage with different n values
+for n in ns:
+    wrapped_testfn(n)
